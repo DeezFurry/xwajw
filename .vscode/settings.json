@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/workspaces/xwajw",
+            "binaryPath": "/workspaces/xwajw/xwajw",
+            "binaryArgs": []
+        }
+    ]
+}

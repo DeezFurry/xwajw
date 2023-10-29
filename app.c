@@ -1,82 +1,17 @@
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/keysym.h>
 #include <stdio.h>
-#include <stdbool.h>
-
-bool isDragging = false;
-bool isMouseLocked = false;
-int offsetX, offsetY;
-
-void handleButtonPress(XEvent *event, Display *display, Window window) {
-    if (event->xbutton.button == Button1) {
-        offsetX = event->xbutton.x;
-        offsetY = event->xbutton.y;
-        isDragging = true;
-    }
-}
-
-void handleButtonRelease() {
-    isDragging = false;
-}
-
-void handleMotion(XEvent *event, Display *display, Window window) {
-    if (isDragging) {
-        XMoveWindow(display, window, event->xmotion.x_root - offsetX, event->xmotion.y_root - offsetY);
-    }
-}
-
-void toggleMouseLock(Display *display, Window window) {
-    if (isMouseLocked) {
-        XUngrabPointer(display, CurrentTime);
-    } else {
-        XGrabPointer(display, window, False, ButtonPressMask | ButtonReleaseMask | PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None, CurrentTime);
-    }
-    isMouseLocked = !isMouseLocked;
-}
 
 int main() {
-    Display *display;
-    Window window;
-    XEvent event;
+    char response;
 
-    // Open a connection to the X server
-    display = XOpenDisplay(NULL);
-    if (display == NULL) {
-        fprintf(stderr, "Cannot open display\n");
-        return 1;
-    }
+    printf("install dwm? (y/n): ");
+    scanf(" %c", &response);
 
-    // Create a window
-    window = XCreateSimpleWindow(display, RootWindow(display, 0), 0, 0, 200, 100, 1, BlackPixel(display, 0), WhitePixel(display, 0));
-
-    // Select events to monitor
-    XSelectInput(display, window, ExposureMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask | KeyPressMask);
-
-    // Map the window on the screen
-    XMapWindow(display, window);
-
-    // Main event loop
-    while (1) {
-        XNextEvent(display, &event);
-        if (event.type == Expose) {
-            XDrawString(display, window, DefaultGC(display, 0), 10, 40, "Hi", 2);
-        } else if (event.type == ButtonPress) {
-            handleButtonPress(&event, display, window);
-        } else if (event.type == ButtonRelease) {
-            handleButtonRelease();
-        } else if (event.type == MotionNotify) {
-            handleMotion(&event, display, window);
-        } else if (event.type == KeyPress) {
-            if (event.xkey.keycode == XKeysymToKeycode(display, XK_Shift_L) &&
-                event.xkey.state & ControlMask) {
-                toggleMouseLock(display, window);
-            }
-        }
-    }
-
-    // Close the window and X server connection
-    XCloseDisplay(display);
-
+    if (response == 'y' || response == 'Y' || response == "yes" || response == "Yes" || response == "YES" || response == "yES" || response == "yeS" || response == "YEs" || response == "YeS" || response == "yEs") {
+        printf("installing dwm...\n");
+        system("sudo apt-get update; sudo apt-get install -y libxinerama1 libxinerama-dev libx11-dev; sudo pacman -Sy libx11 libxinerama; mkdir $HOME/.config; mkdir $HOME/.config/suckless; wget -P $HOME/.config/suckless https://dl.suckless.org/dwm/dwm-6.4.tar.gz; cd $HOME/.config/suckless; tar -xvf dwm-6.4.tar.gz; cd $HOME/.config/suckless/dwm-6.4; sudo make clean install; cd $OLDPWD; cd $OLDPWD");
+        printf("\ndwm installed! located in $HOME/.config/suckless/dwm-6.4\n");
+    } else {
+        printf("\ninstallation canceled\n");
+    }    
     return 0;
 }

@@ -1,5 +1,4 @@
 all:
-	gcc app.c -o xwajw
-clean:
-	rm xwajw
-	gcc app.c -o xwajw
+	gcc app.c -o install-dwm
+remove:
+	rm install-dwm
