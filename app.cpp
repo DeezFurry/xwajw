@@ -42,7 +42,7 @@ int main() {
             XSetForeground(dis,gc,red);
             XDrawLine(dis,win,gc,dot.x,dot.y,x,y);
             XSetForeground(dis,gc,white);
-            strcpy(text,"heyo");
+            strcpy(text,"o");
             XDrawString(dis,win,gc,x,y,text,strlen(text));
             dot.x=x;dot.y=y;
         }
