@@ -5,5 +5,6 @@
             "binaryPath": "/workspaces/xwajw/xwajw",
             "binaryArgs": []
         }
-    ]
+    ],
+    "C_Cpp.errorSquiggles": "disabled"
 }

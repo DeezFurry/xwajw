@@ -1,4 +1,8 @@
-all:
+c:
 	gcc app.c -o install-dwm
-remove:
+removec:
 	rm install-dwm
+cpp:
+	g++ app.cpp -lX11 -o x11progm
+removecpp:
+	rm x11progm
